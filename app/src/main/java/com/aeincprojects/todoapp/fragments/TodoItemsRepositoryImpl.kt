@@ -37,6 +37,7 @@ object TodoItemsRepositoryImpl: TodoItemsRepository {
 
     override fun addNewTodo(newTodoItem: TodoItem) {
         items = items.toMutableList()
+        Log.i("NN", "new")
         items.add(newTodoItem)
     }
 

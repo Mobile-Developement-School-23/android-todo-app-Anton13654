@@ -28,11 +28,9 @@ class AddNewTodoViewModel(
 
     }
 
-    fun saveNewTodo(text: String, importance: Importance, data: String){
+    fun saveNewTodo(text: String, importance: Importance, data: String = ""){
         lateinit var newItem: TodoItem
         if(_itemToDo.value==null){
-            val dataCreation = LocalDateTime.now()
-            val data2 = "${dataCreation.dayOfMonth}/${dataCreation.monthValue}/${dataCreation.year}}"
             repository.addNewTodo(TodoItem(System.currentTimeMillis().toString(), text, importance, data, false, getCurrentData(), null))
         }else{
             newItem = TodoItem(_itemToDo.value!!.id, text, importance, data, _itemToDo.value!!.isDone, _itemToDo.value!!.dateCreation, getCurrentData())

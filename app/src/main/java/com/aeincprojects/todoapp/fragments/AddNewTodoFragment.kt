@@ -59,13 +59,14 @@ class AddNewTodoFragment : Fragment(R.layout.fragment_add_new_todo), AdapterView
     }
 
     fun saveNewTodoItem(){
-        val text = binding.dataText.text.toString()
+        val text = binding.edittextButton.text.toString()
         val importance = when(binding.spinnerImportance.selectedItem){
             "Нет" -> Importance.Normal
             "Низкий" -> Importance.Low
             else -> Importance.Urgent
         }
         val dateFinish = binding.dataText.text.toString()
+
         viewModel.saveNewTodo(text, importance, dateFinish)
         findNavController().navigateUp()
     }
