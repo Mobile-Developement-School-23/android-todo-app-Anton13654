@@ -56,7 +56,6 @@ class AddNewTodoFragment : Fragment(R.layout.fragment_add_new_todo), AdapterView
         binding.saveButton.setOnClickListener {
             saveNewTodoItem()
         }
-
     }
 
     fun saveNewTodoItem(){
