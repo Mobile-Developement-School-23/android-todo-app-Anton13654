@@ -18,5 +18,9 @@
         android:id="@+id/addNewTodoFragment"
         android:name="com.aeincprojects.todoapp.fragments.AddNewTodoFragment"
         android:label="fragment_add_new_todo"
-        tools:layout="@layout/fragment_add_new_todo" />
+        tools:layout="@layout/fragment_add_new_todo" >
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
 </navigation>

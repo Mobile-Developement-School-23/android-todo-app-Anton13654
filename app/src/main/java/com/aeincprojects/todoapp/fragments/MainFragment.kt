@@ -22,9 +22,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     private val binding: FragmentMainBinding by viewBinding(FragmentMainBinding::bind)
     private val viewModel: MainFragmentViewModel by viewModels()
+    
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.sendItems()
 
         val adapter = ListTodoAdapter(){
             viewModel.updateStatusTodo(it)
@@ -53,7 +55,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
 
         binding.addNewTodo.setOnClickListener{
-            findNavController().navigate(MainFragmentDirections.actionMainFragmentToAddNewTodoFragment())
+            findNavController().navigate(MainFragmentDirections.actionMainFragmentToAddNewTodoFragment(""))
         }
     }
 

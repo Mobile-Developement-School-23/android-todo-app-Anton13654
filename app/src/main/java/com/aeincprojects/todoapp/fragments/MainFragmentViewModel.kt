@@ -21,7 +21,7 @@ class MainFragmentViewModel(
         sendItems()
     }
 
-    private fun sendItems(){
+    fun sendItems(){
         viewModelScope.launch(Dispatchers.IO) {
             _items.value = repository.takeListTodo()
         }

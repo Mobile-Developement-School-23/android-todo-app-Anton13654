@@ -13,4 +13,9 @@ interface TodoItemsRepository {
     fun updateStatus(todoItem: TodoItem)
 
     fun deleteElement(id: String)
+
+    fun takeOneElement(id: String): TodoItem?
+
+    fun updateElement(_oldItem: TodoItem, todoItem: TodoItem,)
+
 }
