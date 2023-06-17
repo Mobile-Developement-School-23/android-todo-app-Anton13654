@@ -67,11 +67,8 @@ class AddNewTodoFragment : Fragment(R.layout.fragment_add_new_todo), AdapterView
             else -> Importance.Urgent
         }
         val dateFinish = binding.dataText.text.toString()
-        //viewModel.saveNewTodo(text, importance, dateFinish)
-        val dataCreation = LocalDateTime.now()
-        val data2 = "${dataCreation.dayOfMonth}/${dataCreation.monthValue}/${dataCreation.year}"
-        Toast.makeText(requireContext(), data2, Toast.LENGTH_LONG).show()
-
+        viewModel.saveNewTodo(text, importance, dateFinish)
+        findNavController().navigateUp()
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {

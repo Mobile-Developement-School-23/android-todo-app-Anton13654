@@ -32,12 +32,12 @@ object TodoItemsRepositoryImpl: TodoItemsRepository {
             )
 
     override fun takeListTodo(): List<TodoItem> {
-        Log.i("GGb", "FDDDF")
         return items.sortedBy { it.id }
     }
 
     override fun addNewTodo(newTodoItem: TodoItem) {
-        TODO("Not yet implemented")
+        items = items.toMutableList()
+        items.add(newTodoItem)
     }
 
     override fun updateStatus(todoItem1: TodoItem) {
