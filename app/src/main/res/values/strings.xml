@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">ToDoApp</string>
+    <string name="app_name">ToDo App</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="main_fragment_description">Мои дела</string>
+    <string name="save_button">сохранить</string>
+
+    <string-array name="Spinner_importance">
+        <item>Нет</item>
+        <item>Низкий</item>
+        <item>Высокий</item>
+    </string-array>
 </resources>
