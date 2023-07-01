@@ -2,15 +2,17 @@ package com.aeincprojects.todoapp.fragments
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aeincprojects.todoapp.models.TodoItem
+import com.aeincprojects.todoapp.data.models.TodoItem
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-
-class MainFragmentViewModel(
-    private val repository: TodoItemsRepository = TodoItemsRepositoryImpl
+@HiltViewModel
+class MainFragmentViewModel @Inject constructor(
+    private val repository: TodoItemsRepository
 
 ): ViewModel() {
 
@@ -18,23 +20,41 @@ class MainFragmentViewModel(
     val items = _items.asStateFlow()
 
     init {
-        sendItems()
+        //sendItems()
+        getListTodo()
     }
 
-    fun sendItems(){
+    fun getListTodo(){
+        viewModelScope.launch(Dispatchers.IO) {
+            _items.value = repository.getListFromServer()
+        }
+    }
+
+   /* fun sendItems(){
         viewModelScope.launch(Dispatchers.IO) {
             _items.value = repository.takeListTodo()
         }
     }
 
+    */
+/*
     fun updateStatusTodo(item: TodoItem){
-        repository.updateStatus(item)
-        sendItems()
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateStatus(item)
+            sendItems()
+        }
     }
 
+ */
+
+    /*
     fun deleteElement(position: Int){
-        repository.deleteElement(_items.value[position].id)
-        sendItems()
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteElement(_items.value[position].id)
+            sendItems()
+        }
     }
+
+     */
 
 }

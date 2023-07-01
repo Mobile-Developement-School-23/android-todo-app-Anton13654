@@ -10,7 +10,7 @@ import android.widget.CheckBox
 import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
 import com.aeincprojects.todoapp.R
-import com.aeincprojects.todoapp.models.TodoItem
+import com.aeincprojects.todoapp.data.models.TodoItem
 import com.aeincprojects.todoapp.util.Importance
 
 

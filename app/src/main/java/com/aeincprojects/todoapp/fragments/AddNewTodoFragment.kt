@@ -16,12 +16,13 @@ import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.aeincprojects.todoapp.R
 import com.aeincprojects.todoapp.databinding.FragmentAddNewTodoBinding
-import com.aeincprojects.todoapp.models.TodoItem
+import com.aeincprojects.todoapp.data.models.TodoItem
 import com.aeincprojects.todoapp.util.Importance
+import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDateTime
 import java.util.*
 
-
+@AndroidEntryPoint
 class AddNewTodoFragment : Fragment(R.layout.fragment_add_new_todo), AdapterView.OnItemSelectedListener {
 
     private val binding:  FragmentAddNewTodoBinding by viewBinding(FragmentAddNewTodoBinding::bind)
@@ -30,7 +31,7 @@ class AddNewTodoFragment : Fragment(R.layout.fragment_add_new_todo), AdapterView
 
     override fun onStart() {
         super.onStart()
-        viewModel.takeId(args.id)
+       // viewModel.takeId(args.id)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,11 +40,11 @@ class AddNewTodoFragment : Fragment(R.layout.fragment_add_new_todo), AdapterView
         binding.spinnerImportance.onItemSelectedListener = this
         binding.dataText.visibility = View.GONE
         binding.deleteLayout.setOnClickListener{
-            viewModel.deleteElement()
+           // viewModel.deleteElement()
             findNavController().navigateUp()
         }
         binding.closeButton.setOnClickListener {
-            findNavController().navigateUp()
+            viewModel.addNewTodo()
         }
         binding.switchData.setOnClickListener {
             if(binding.switchData.isChecked){
@@ -67,7 +68,7 @@ class AddNewTodoFragment : Fragment(R.layout.fragment_add_new_todo), AdapterView
         }
         val dateFinish = binding.dataText.text.toString()
 
-        viewModel.saveNewTodo(text, importance, dateFinish)
+     //   viewModel.saveNewTodo(text, importance, dateFinish)
         findNavController().navigateUp()
     }
 

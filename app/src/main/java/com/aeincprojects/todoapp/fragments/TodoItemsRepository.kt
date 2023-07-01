@@ -1,6 +1,6 @@
 package com.aeincprojects.todoapp.fragments
 
-import com.aeincprojects.todoapp.models.TodoItem
+import com.aeincprojects.todoapp.data.models.TodoItem
 import com.aeincprojects.todoapp.util.Importance
 import java.util.*
 
@@ -16,6 +16,16 @@ interface TodoItemsRepository {
 
     fun takeOneElement(id: String): TodoItem?
 
-    fun updateElement(_oldItem: TodoItem, todoItem: TodoItem,)
+    fun updateElement(_oldItem: TodoItem, todoItem: TodoItem)
+
+    suspend fun getListFromServer(): List<TodoItem>
+
+    suspend fun getElementFromServer(): TodoItem
+
+    suspend fun addElementOnServer(todoItem: TodoItem)
+
+    suspend fun updateElementOnServer(id: String, todoItem: TodoItem): TodoItem
+
+    suspend fun deleteElementOnServer(id: String, todoItem: TodoItem): TodoItem
 
 }

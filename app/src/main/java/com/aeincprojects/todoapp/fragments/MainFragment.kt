@@ -14,10 +14,11 @@ import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.aeincprojects.todoapp.R
 import com.aeincprojects.todoapp.databinding.FragmentMainBinding
-import com.aeincprojects.todoapp.models.TodoItem
+import com.aeincprojects.todoapp.data.models.TodoItem
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
-
+@AndroidEntryPoint
 class MainFragment : Fragment(R.layout.fragment_main) {
 
     private val binding: FragmentMainBinding by viewBinding(FragmentMainBinding::bind)
@@ -26,10 +27,10 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.sendItems()
+        //viewModel.sendItems()
 
         val adapter = ListTodoAdapter(){
-            viewModel.updateStatusTodo(it)
+           // viewModel.updateStatusTodo(it)
         }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -43,7 +44,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
                     val position = viewHolder.bindingAdapterPosition
-                    viewModel.deleteElement(position)
+                 //   viewModel.deleteElement(position)
                 }
             }
         ).attachToRecyclerView(binding.recyclerView)
@@ -55,6 +56,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
 
         binding.addNewTodo.setOnClickListener{
+            //viewModel.getListTodo()
             findNavController().navigate(MainFragmentDirections.actionMainFragmentToAddNewTodoFragment(""))
         }
     }

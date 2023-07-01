@@ -1,11 +1,22 @@
 package com.aeincprojects.todoapp.fragments
 
+import android.content.Context
 import android.util.Log
-import com.aeincprojects.todoapp.models.TodoItem
+import com.aeincprojects.todoapp.ServerApi
+import com.aeincprojects.todoapp.data.database.TodoDao
+import com.aeincprojects.todoapp.data.models.TodoItem
 import com.aeincprojects.todoapp.util.Importance
+import com.aeincprojects.todoapp.util.MY_TEST
 import java.util.*
+import javax.inject.Inject
+import kotlin.collections.HashMap
 
-object TodoItemsRepositoryImpl: TodoItemsRepository {
+class TodoItemsRepositoryImpl @Inject constructor(
+    private val todoDao: TodoDao,
+    private val context: Context,
+    private val serverApi: ServerApi
+
+    ): TodoItemsRepository {
 
 
     var items: MutableList<TodoItem> = mutableListOf(
@@ -64,4 +75,31 @@ object TodoItemsRepositoryImpl: TodoItemsRepository {
         items.remove(todoItemOld)
         items.add(todoItemNew)
     }
+
+    override suspend fun getListFromServer(): List<TodoItem> {
+        val listTodo =  serverApi.takeListFromServer("Bearer unappetizing").body()
+        if (listTodo != null) {
+            todoDao.addElements(listTodo.list.map { it.toTodoItem() })
+        }
+        return listTodo?.list?.map{it.toTodoItem()} ?: todoDao.getListTodo()
+    }
+
+    override suspend fun getElementFromServer(): TodoItem {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun addElementOnServer(todoItem: TodoItem) {
+
+        serverApi.addNewTodo(hashMapOf("Authorization" to "Bearer unappetizing", "X-Last-Known-Revision" to 0.toString()),   MY_TEST)
+        Log.i("Goga", "Прошло2")
+    }
+
+    override suspend fun updateElementOnServer(id: String, todoItem: TodoItem): TodoItem {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteElementOnServer(id: String, todoItem: TodoItem): TodoItem {
+        TODO("Not yet implemented")
+    }
+
 }
