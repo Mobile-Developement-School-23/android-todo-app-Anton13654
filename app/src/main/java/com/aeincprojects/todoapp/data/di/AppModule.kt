@@ -1,20 +1,19 @@
-package com.aeincprojects.todoapp.data
+package com.aeincprojects.todoapp.data.di
 
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
-import com.aeincprojects.todoapp.ServerApi
+import com.aeincprojects.todoapp.data.TodoItemsRepositoryImpl
 import com.aeincprojects.todoapp.data.api.HeaderInterceptor
+import com.aeincprojects.todoapp.data.api.ServerApi
 import com.aeincprojects.todoapp.data.database.TodoDao
 import com.aeincprojects.todoapp.data.database.TodoDatabase
-import com.aeincprojects.todoapp.fragments.TodoItemsRepository
-import com.aeincprojects.todoapp.fragments.TodoItemsRepositoryImpl
+import com.aeincprojects.todoapp.domain.TodoItemsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

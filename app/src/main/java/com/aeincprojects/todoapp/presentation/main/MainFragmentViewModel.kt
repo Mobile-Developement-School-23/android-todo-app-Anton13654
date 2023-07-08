@@ -1,9 +1,9 @@
-package com.aeincprojects.todoapp.fragments
+package com.aeincprojects.todoapp.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aeincprojects.todoapp.data.models.TodoFromServer
-import com.aeincprojects.todoapp.data.models.TodoItem
+import com.aeincprojects.todoapp.domain.TodoItemsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,18 +29,6 @@ class MainFragmentViewModel @Inject constructor(
             _items.value = repository.getListFromServer()
         }
     }
-
-
-/*
-    fun updateStatusTodo(item: TodoItem){
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.updateStatus(item)
-            sendItems()
-        }
-    }
-
- */
-
 
     fun deleteElement(position: Int){
         viewModelScope.launch(Dispatchers.IO) {

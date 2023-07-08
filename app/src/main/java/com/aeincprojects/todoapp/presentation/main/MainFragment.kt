@@ -1,10 +1,8 @@
-package com.aeincprojects.todoapp.fragments
+package com.aeincprojects.todoapp.presentation.main
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -14,16 +12,18 @@ import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.aeincprojects.todoapp.R
 import com.aeincprojects.todoapp.databinding.FragmentMainBinding
-import com.aeincprojects.todoapp.data.models.TodoItem
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MainFragment : Fragment(R.layout.fragment_main) {
 
     private val binding: FragmentMainBinding by viewBinding(FragmentMainBinding::bind)
     private val viewModel: MainFragmentViewModel by viewModels()
-    
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.getListTodo()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

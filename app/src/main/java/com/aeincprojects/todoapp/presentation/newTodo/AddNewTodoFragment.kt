@@ -1,28 +1,21 @@
-package com.aeincprojects.todoapp.fragments
+package com.aeincprojects.todoapp.presentation.newTodo
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavArgs
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.aeincprojects.todoapp.R
 import com.aeincprojects.todoapp.databinding.FragmentAddNewTodoBinding
-import com.aeincprojects.todoapp.data.models.TodoItem
 import com.aeincprojects.todoapp.util.Importance
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.*
 
 @AndroidEntryPoint
@@ -55,7 +48,7 @@ class AddNewTodoFragment : Fragment(R.layout.fragment_add_new_todo), AdapterView
             findNavController().navigateUp()
         }
         binding.closeButton.setOnClickListener {
-            viewModel.addNewTodo()
+            findNavController().navigateUp()
         }
         binding.switchData.setOnClickListener {
             if(binding.switchData.isChecked){
@@ -67,6 +60,7 @@ class AddNewTodoFragment : Fragment(R.layout.fragment_add_new_todo), AdapterView
         }
         binding.saveButton.setOnClickListener {
             saveNewTodoItem()
+            findNavController().navigateUp()
         }
     }
 

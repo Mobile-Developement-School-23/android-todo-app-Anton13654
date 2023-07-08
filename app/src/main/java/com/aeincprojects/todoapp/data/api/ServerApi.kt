@@ -1,4 +1,4 @@
-package com.aeincprojects.todoapp
+package com.aeincprojects.todoapp.data.api
 
 import com.aeincprojects.todoapp.data.models.*
 import retrofit2.Response

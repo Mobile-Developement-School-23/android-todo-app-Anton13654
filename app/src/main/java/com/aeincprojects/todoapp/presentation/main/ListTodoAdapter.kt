@@ -1,4 +1,4 @@
-package com.aeincprojects.todoapp.fragments
+package com.aeincprojects.todoapp.presentation.main
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
@@ -11,8 +11,6 @@ import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
 import com.aeincprojects.todoapp.R
 import com.aeincprojects.todoapp.data.models.TodoFromServer
-import com.aeincprojects.todoapp.data.models.TodoItem
-import com.aeincprojects.todoapp.util.Importance
 
 
 class ListTodoAdapter(val onClick: (String)-> Unit): RecyclerView.Adapter<ListTodoAdapter.ListTodoViewHolder>() {
