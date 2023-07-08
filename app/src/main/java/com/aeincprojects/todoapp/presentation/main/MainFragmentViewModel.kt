@@ -37,6 +37,4 @@ class MainFragmentViewModel @Inject constructor(
         }
     }
 
-
-
 }

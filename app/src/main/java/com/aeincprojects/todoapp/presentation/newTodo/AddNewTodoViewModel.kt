@@ -63,8 +63,6 @@ class AddNewTodoViewModel @Inject constructor(
         }
     }
 
-
-
     fun deleteElement(){
         viewModelScope.launch(Dispatchers.IO) {
             if(id!=""){
