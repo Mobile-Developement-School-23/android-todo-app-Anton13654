@@ -1,25 +1,21 @@
-package com.aeincprojects.todoapp.fragments
+package com.aeincprojects.todoapp.presentation.newTodo
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavArgs
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.aeincprojects.todoapp.R
 import com.aeincprojects.todoapp.databinding.FragmentAddNewTodoBinding
-import com.aeincprojects.todoapp.data.models.TodoItem
 import com.aeincprojects.todoapp.util.Importance
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.LocalDateTime
+import java.text.SimpleDateFormat
 import java.util.*
 
 @AndroidEntryPoint
@@ -31,20 +27,28 @@ class AddNewTodoFragment : Fragment(R.layout.fragment_add_new_todo), AdapterView
 
     override fun onStart() {
         super.onStart()
-       // viewModel.takeId(args.id)
+        viewModel.takeId(args.id)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            viewModel.item.collect{
+                if (it!= null){
+                    inflateForms(it.text)
+                }
+            }
+        }
 
 
         binding.spinnerImportance.onItemSelectedListener = this
         binding.dataText.visibility = View.GONE
         binding.deleteLayout.setOnClickListener{
-           // viewModel.deleteElement()
+            viewModel.deleteElement()
             findNavController().navigateUp()
         }
         binding.closeButton.setOnClickListener {
-            viewModel.addNewTodo()
+            findNavController().navigateUp()
         }
         binding.switchData.setOnClickListener {
             if(binding.switchData.isChecked){
@@ -56,20 +60,28 @@ class AddNewTodoFragment : Fragment(R.layout.fragment_add_new_todo), AdapterView
         }
         binding.saveButton.setOnClickListener {
             saveNewTodoItem()
+            findNavController().navigateUp()
         }
     }
 
-    fun saveNewTodoItem(){
+    private fun saveNewTodoItem(){
         val text = binding.edittextButton.text.toString()
+        var dateFinish: Long = 0
         val importance = when(binding.spinnerImportance.selectedItem){
             "Нет" -> Importance.Normal
             "Низкий" -> Importance.Low
             else -> Importance.Urgent
         }
-        val dateFinish = binding.dataText.text.toString()
+        val dateFinishText = binding.dataText.text.toString()
+        if(dateFinishText == ""){
+            dateFinish = 0
+        }else{
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy")
+            dateFinish = dateFormat.parse(dateFinishText).time
+        }
 
-     //   viewModel.saveNewTodo(text, importance, dateFinish)
-        findNavController().navigateUp()
+        viewModel.saveTodo(text, importance, dateFinish)
+        //findNavController().navigateUp()
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -78,6 +90,10 @@ class AddNewTodoFragment : Fragment(R.layout.fragment_add_new_todo), AdapterView
 
     override fun onNothingSelected(p0: AdapterView<*>?) {
 
+    }
+
+    fun inflateForms(text: String){
+        binding.edittextButton.setText(text)
     }
 
     @SuppressLint("SetTextI18n")

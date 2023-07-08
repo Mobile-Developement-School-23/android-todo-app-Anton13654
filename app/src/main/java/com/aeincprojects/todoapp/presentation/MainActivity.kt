@@ -1,16 +1,12 @@
-package com.aeincprojects.todoapp
+package com.aeincprojects.todoapp.presentation
 
-import android.app.Application
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.aeincprojects.todoapp.data.database.TodoDao
-import com.aeincprojects.todoapp.data.database.TodoDatabase
+import com.aeincprojects.todoapp.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

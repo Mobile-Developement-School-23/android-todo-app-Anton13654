@@ -1,4 +1,4 @@
-package com.aeincprojects.todoapp.fragments
+package com.aeincprojects.todoapp.presentation.main
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
@@ -10,13 +10,13 @@ import android.widget.CheckBox
 import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
 import com.aeincprojects.todoapp.R
-import com.aeincprojects.todoapp.data.models.TodoItem
+import com.aeincprojects.todoapp.data.models.TodoFromServer
 import com.aeincprojects.todoapp.util.Importance
 
 
-class ListTodoAdapter(val onClick: (TodoItem)-> Unit): RecyclerView.Adapter<ListTodoAdapter.ListTodoViewHolder>() {
+class ListTodoAdapter(val onClick: (String)-> Unit): RecyclerView.Adapter<ListTodoAdapter.ListTodoViewHolder>() {
 
-    var items: List<TodoItem> = listOf()
+    var items: List<TodoFromServer> = listOf()
     @SuppressLint("NotifyDataSetChanged")
     set(value){
         field = value
@@ -30,19 +30,19 @@ class ListTodoAdapter(val onClick: (TodoItem)-> Unit): RecyclerView.Adapter<List
 
     override fun onBindViewHolder(holder: ListTodoViewHolder, position: Int) {
         var currentElement = items[position]
-        var colorGreen = ColorStateList.valueOf(Color.RED)
+        var colorGreen = ColorStateList.valueOf(Color.GREEN)
         var colorBlack = ColorStateList.valueOf(Color.BLACK)
-        var colorRed = ColorStateList.valueOf(Color.GREEN)
+        var colorRed = ColorStateList.valueOf(Color.RED)
 
-        holder.checkBox.text = currentElement.textToDo
+        holder.checkBox.text = currentElement.text
         holder.checkBox.buttonTintList = when(currentElement.importance){
-            Importance.Low -> colorGreen
-            Importance.Normal -> colorBlack
-            Importance.Urgent -> colorRed
+            "low" -> colorGreen
+            "basic" -> colorBlack
+            else -> colorRed
         }
-        holder.checkBox.isChecked = currentElement.isDone
+        holder.checkBox.isChecked = currentElement.done
         holder.checkBox.setOnClickListener {
-            onClick(currentElement)
+            onClick(currentElement.id)
         }
 
     }

@@ -1,8 +1,8 @@
-package com.aeincprojects.todoapp.fragments
+package com.aeincprojects.todoapp.presentation.main
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
@@ -14,23 +14,24 @@ import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.aeincprojects.todoapp.R
 import com.aeincprojects.todoapp.databinding.FragmentMainBinding
-import com.aeincprojects.todoapp.data.models.TodoItem
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MainFragment : Fragment(R.layout.fragment_main) {
 
     private val binding: FragmentMainBinding by viewBinding(FragmentMainBinding::bind)
     private val viewModel: MainFragmentViewModel by viewModels()
-    
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getListTodo()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //viewModel.sendItems()
 
         val adapter = ListTodoAdapter(){
-           // viewModel.updateStatusTodo(it)
+            findNavController().navigate(MainFragmentDirections.actionMainFragmentToAddNewTodoFragment(it))
         }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -44,7 +45,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
                     val position = viewHolder.bindingAdapterPosition
-                 //   viewModel.deleteElement(position)
+                    viewModel.deleteElement(position)
                 }
             }
         ).attachToRecyclerView(binding.recyclerView)
@@ -56,7 +57,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
 
         binding.addNewTodo.setOnClickListener{
-            //viewModel.getListTodo()
+            viewModel.getListTodo()
             findNavController().navigate(MainFragmentDirections.actionMainFragmentToAddNewTodoFragment(""))
         }
     }
