@@ -19,6 +19,4 @@ interface TodoItemsRepository {
 
     suspend fun deleteElementOnServer(id: String)
 
-    suspend fun updateListOnServer()
-
 }
