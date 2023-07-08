@@ -1,8 +1,10 @@
 package com.aeincprojects.todoapp.presentation.main
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -20,17 +22,15 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private val binding: FragmentMainBinding by viewBinding(FragmentMainBinding::bind)
     private val viewModel: MainFragmentViewModel by viewModels()
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         viewModel.getListTodo()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //viewModel.sendItems()
 
         val adapter = ListTodoAdapter(){
-            //viewModel.updateStatusTodo(it)
             findNavController().navigate(MainFragmentDirections.actionMainFragmentToAddNewTodoFragment(it))
         }
         binding.recyclerView.adapter = adapter

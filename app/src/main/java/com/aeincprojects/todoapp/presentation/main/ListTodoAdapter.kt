@@ -11,6 +11,7 @@ import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
 import com.aeincprojects.todoapp.R
 import com.aeincprojects.todoapp.data.models.TodoFromServer
+import com.aeincprojects.todoapp.util.Importance
 
 
 class ListTodoAdapter(val onClick: (String)-> Unit): RecyclerView.Adapter<ListTodoAdapter.ListTodoViewHolder>() {
@@ -36,7 +37,7 @@ class ListTodoAdapter(val onClick: (String)-> Unit): RecyclerView.Adapter<ListTo
         holder.checkBox.text = currentElement.text
         holder.checkBox.buttonTintList = when(currentElement.importance){
             "low" -> colorGreen
-            "normal" -> colorBlack
+            "basic" -> colorBlack
             else -> colorRed
         }
         holder.checkBox.isChecked = currentElement.done

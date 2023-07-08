@@ -22,15 +22,6 @@ class AddNewTodoViewModel @Inject constructor(
     private val _itemToDo: MutableStateFlow<TodoFromServer?> = MutableStateFlow(null)
     val item = _itemToDo.asStateFlow()
 
-
-
-    fun addNewTodo(){
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.addElementOnServer(TodoFromServer("1", "donyt", "low", 0, false, "0", 0,0, ""))
-        }
-    }
-
-
     fun takeId(newId: String){
         viewModelScope.launch(Dispatchers.IO) {
             id = newId
@@ -41,9 +32,7 @@ class AddNewTodoViewModel @Inject constructor(
     }
 
 
-    fun selectImportance(importance: String){
-
-    }
+    fun selectImportance(importance: String){}
 
     private fun saveNewTodo(text: String, importance: String, dataFinish: Long?){
         viewModelScope.launch(Dispatchers.IO) {
