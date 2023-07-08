@@ -30,7 +30,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         //viewModel.sendItems()
 
         val adapter = ListTodoAdapter(){
-           // viewModel.updateStatusTodo(it)
+            //viewModel.updateStatusTodo(it)
+            findNavController().navigate(MainFragmentDirections.actionMainFragmentToAddNewTodoFragment(it))
         }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -44,7 +45,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
                     val position = viewHolder.bindingAdapterPosition
-                 //   viewModel.deleteElement(position)
+                    viewModel.deleteElement(position)
                 }
             }
         ).attachToRecyclerView(binding.recyclerView)
@@ -56,7 +57,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
 
         binding.addNewTodo.setOnClickListener{
-            //viewModel.getListTodo()
+            viewModel.getListTodo()
             findNavController().navigate(MainFragmentDirections.actionMainFragmentToAddNewTodoFragment(""))
         }
     }

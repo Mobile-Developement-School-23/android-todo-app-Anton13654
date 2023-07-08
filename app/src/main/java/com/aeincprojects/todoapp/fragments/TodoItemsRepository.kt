@@ -1,31 +1,32 @@
 package com.aeincprojects.todoapp.fragments
 
+import com.aeincprojects.todoapp.data.models.TodoFromServer
 import com.aeincprojects.todoapp.data.models.TodoItem
 import com.aeincprojects.todoapp.util.Importance
 import java.util.*
 
 interface TodoItemsRepository {
 
-    fun takeListTodo(): List<TodoItem>
+    suspend fun takeListTodo(): List<TodoItem>
 
-    fun addNewTodo(newTodoItem: TodoItem)
+    suspend fun addNewTodo(newTodoItem: TodoItem)
 
-    fun updateStatus(todoItem: TodoItem)
+    suspend fun updateStatus(todoItem: TodoItem)
 
-    fun deleteElement(id: String)
+    suspend fun deleteElement(id: String)
 
-    fun takeOneElement(id: String): TodoItem?
+    suspend fun takeOneElement(id: String): TodoFromServer?
 
-    fun updateElement(_oldItem: TodoItem, todoItem: TodoItem)
+    suspend fun updateElement(_oldItem: TodoItem, todoItem: TodoItem)
 
-    suspend fun getListFromServer(): List<TodoItem>
+    suspend fun getListFromServer(): List<TodoFromServer>
 
     suspend fun getElementFromServer(): TodoItem
 
-    suspend fun addElementOnServer(todoItem: TodoItem)
+    suspend fun addElementOnServer(todo: TodoFromServer)
 
-    suspend fun updateElementOnServer(id: String, todoItem: TodoItem): TodoItem
+    suspend fun updateElementOnServer(id: String, todo: TodoFromServer)
 
-    suspend fun deleteElementOnServer(id: String, todoItem: TodoItem): TodoItem
+    suspend fun deleteElementOnServer(id: String): TodoItem
 
 }

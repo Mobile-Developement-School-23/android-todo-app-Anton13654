@@ -2,6 +2,7 @@ package com.aeincprojects.todoapp.fragments
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aeincprojects.todoapp.data.models.TodoFromServer
 import com.aeincprojects.todoapp.data.models.TodoItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -16,11 +17,10 @@ class MainFragmentViewModel @Inject constructor(
 
 ): ViewModel() {
 
-    private val _items: MutableStateFlow<List<TodoItem>> = MutableStateFlow(emptyList())
+    private val _items: MutableStateFlow<List<TodoFromServer>> = MutableStateFlow(emptyList())
     val items = _items.asStateFlow()
 
     init {
-        //sendItems()
         getListTodo()
     }
 
@@ -30,13 +30,7 @@ class MainFragmentViewModel @Inject constructor(
         }
     }
 
-   /* fun sendItems(){
-        viewModelScope.launch(Dispatchers.IO) {
-            _items.value = repository.takeListTodo()
-        }
-    }
 
-    */
 /*
     fun updateStatusTodo(item: TodoItem){
         viewModelScope.launch(Dispatchers.IO) {
@@ -47,14 +41,14 @@ class MainFragmentViewModel @Inject constructor(
 
  */
 
-    /*
+
     fun deleteElement(position: Int){
         viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteElement(_items.value[position].id)
-            sendItems()
+            repository.deleteElementOnServer(_items.value[position].id)
+            getListTodo()
         }
     }
 
-     */
+
 
 }

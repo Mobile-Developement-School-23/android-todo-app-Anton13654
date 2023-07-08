@@ -1,10 +1,6 @@
 package com.aeincprojects.todoapp
 
-import com.aeincprojects.todoapp.data.models.ElementTodoFromServer
-import com.aeincprojects.todoapp.data.models.ElementTodoWithoutRevision
-import com.aeincprojects.todoapp.data.models.ListTodoFromServer
-import com.aeincprojects.todoapp.data.models.ListTodoWithoutRevision
-import com.aeincprojects.todoapp.data.models.TodoFromServer
+import com.aeincprojects.todoapp.data.models.*
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -21,22 +17,22 @@ interface ServerApi {
 
 
     @GET("list")
-    suspend fun takeListFromServer(@Header("Authorization") token: String): Response<ListTodoFromServer>
+    suspend fun takeListFromServer(): Response<ListTodoFromServer>
 
     @PATCH("list")
-    suspend fun updateListServer (@Header("Authorization") token: String, @Body usersStory: ListTodoWithoutRevision): Response<ListTodoFromServer>
+    suspend fun updateListServer (@Header("X-Last-Known-Revision") token: Int, @Body usersStory: ListTodoWithoutRevision): Response<ListTodoFromServer>
 
     @GET("list/{id}")
-    suspend fun takeTodoFromServer(@Header("Authorization") token: String, @Path("id") id: String): Response<ElementTodoFromServer>
+    suspend fun takeTodoFromServer(@Path("id") id: String): Response<ElementTodoFromServer>
 
     @POST("list")
-    suspend fun addNewTodo(@HeaderMap headers: HashMap<String, String>, @Body usersTodo: TodoFromServer): Response<ElementTodoFromServer>
+    suspend fun addNewTodo(@Header("X-Last-Known-Revision") token: Int, @Body usersTodo: Element): Response<ElementTodoFromServer>
 
     @PUT("list/{id}")
-    suspend fun editTodoInServer(@Header("Authorization") token: String, @Path("id") id: String, @Body usersTodo: ElementTodoWithoutRevision): Response<ElementTodoFromServer>
+    suspend fun editTodoInServer(@Header("X-Last-Known-Revision") token: Int, @Path("id") id: String, @Body usersTodo: Element): Response<ElementTodoFromServer>
 
     @DELETE("list/{id}")
-    suspend fun deleteNotConfirm(@Header("Authorization") token: String, @Path("id") id: String): Response<ElementTodoFromServer>
+    suspend fun deleteElement(@Header("X-Last-Known-Revision") token: Int, @Path("id") id: String): Response<ElementTodoFromServer>
 
 
     companion object{

@@ -1,23 +1,24 @@
 package com.aeincprojects.todoapp.fragments
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
+import androidx.core.content.edit
 import com.aeincprojects.todoapp.ServerApi
 import com.aeincprojects.todoapp.data.database.TodoDao
+import com.aeincprojects.todoapp.data.models.Element
+import com.aeincprojects.todoapp.data.models.TodoFromServer
 import com.aeincprojects.todoapp.data.models.TodoItem
 import com.aeincprojects.todoapp.util.Importance
-import com.aeincprojects.todoapp.util.MY_TEST
-import java.util.*
 import javax.inject.Inject
-import kotlin.collections.HashMap
 
 class TodoItemsRepositoryImpl @Inject constructor(
     private val todoDao: TodoDao,
     private val context: Context,
-    private val serverApi: ServerApi
+    private val serverApi: ServerApi,
+    private val sharedPreferences: SharedPreferences
 
     ): TodoItemsRepository {
-
 
     var items: MutableList<TodoItem> = mutableListOf(
             TodoItem("id1)", "Покушать", Importance.Normal, null, false, "18/06/2023", null),
@@ -42,64 +43,78 @@ class TodoItemsRepositoryImpl @Inject constructor(
 
             )
 
-    override fun takeListTodo(): List<TodoItem> {
+    override suspend fun takeListTodo(): List<TodoItem> {
         return items.sortedBy { it.id }
     }
 
-    override fun addNewTodo(newTodoItem: TodoItem) {
+    override suspend fun addNewTodo(newTodoItem: TodoItem) {
         items = items.toMutableList()
         Log.i("NN", "new")
         items.add(newTodoItem)
     }
 
-    override fun updateStatus(todoItem1: TodoItem) {
+    override suspend fun updateStatus(todoItem1: TodoItem) {
         items = items.toMutableList()
         items.remove(todoItem1)
         items.add(todoItem1.copy(isDone = !todoItem1.isDone))
 
     }
 
-    override fun deleteElement(newId: String) {
+    override suspend fun deleteElement(newId: String) {
         items = items.filter { it.id != newId }.toMutableList()
     }
 
-    override fun takeOneElement(newId: String): TodoItem? {
-        val itemsFiltred = items.filter { it.id == newId }.toMutableList()
-        if(itemsFiltred.isNotEmpty()){
-            return itemsFiltred[0]
-        }else return null
+    override suspend fun takeOneElement(newId: String): TodoFromServer? {
+        return todoDao.getTodoById(newId)
     }
 
-    override fun updateElement(todoItemOld: TodoItem, todoItemNew: TodoItem) {
+    override suspend fun updateElement(todoItemOld: TodoItem, todoItemNew: TodoItem) {
         items = items.toMutableList()
         items.remove(todoItemOld)
         items.add(todoItemNew)
     }
 
-    override suspend fun getListFromServer(): List<TodoItem> {
-        val listTodo =  serverApi.takeListFromServer("Bearer unappetizing").body()
+    override suspend fun getListFromServer(): List<TodoFromServer> {
+        val listTodo =  serverApi.takeListFromServer().body()
         if (listTodo != null) {
-            todoDao.addElements(listTodo.list.map { it.toTodoItem() })
+            todoDao.addElements(listTodo.list)
         }
-        return listTodo?.list?.map{it.toTodoItem()} ?: todoDao.getListTodo()
+        return if (listTodo != null && listTodo.list.isNotEmpty()){
+            listTodo.list
+        }else{
+           // todoDao.getListTodo()
+            items.map{it.toWithoutRevision()}
+        }
     }
 
     override suspend fun getElementFromServer(): TodoItem {
         TODO("Not yet implemented")
     }
 
-    override suspend fun addElementOnServer(todoItem: TodoItem) {
-
-        serverApi.addNewTodo(hashMapOf("Authorization" to "Bearer unappetizing", "X-Last-Known-Revision" to 0.toString()),   MY_TEST)
-        Log.i("Goga", "Прошло2")
+    override suspend fun addElementOnServer(todo: TodoFromServer) {
+        serverApi.addNewTodo(takeVersion(), Element(todo))
+        updateVersion(takeVersion()+1)
     }
 
-    override suspend fun updateElementOnServer(id: String, todoItem: TodoItem): TodoItem {
-        TODO("Not yet implemented")
+    override suspend fun updateElementOnServer(id: String, todo: TodoFromServer) {
+        serverApi.editTodoInServer(takeVersion(), id, Element(todo))
+        updateVersion(takeVersion()+1)
     }
 
-    override suspend fun deleteElementOnServer(id: String, todoItem: TodoItem): TodoItem {
-        TODO("Not yet implemented")
+    override suspend fun deleteElementOnServer(id: String): TodoItem {
+        serverApi.deleteElement(takeVersion(), id)
+        //todoDao.deleteTodo()
+        updateVersion(takeVersion()+1)
+        return TodoItem("", "", Importance.Low, "", false, "", "")
+    }
+
+
+    private fun takeVersion(): Int {
+        return sharedPreferences.getInt("key", 11)
+    }
+
+    private fun updateVersion(newVersion: Int) {
+        sharedPreferences.edit { putInt("key", newVersion) }
     }
 
 }

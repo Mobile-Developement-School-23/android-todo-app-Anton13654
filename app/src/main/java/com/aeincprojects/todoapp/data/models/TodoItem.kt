@@ -5,9 +5,7 @@ import androidx.room.PrimaryKey
 import com.aeincprojects.todoapp.util.Importance
 import java.util.Date
 
-@Entity(tableName = "usersTodo")
 data class TodoItem(
-    @PrimaryKey(autoGenerate = false)
     val id: String,
     val textToDo: String,
     val importance: Importance,

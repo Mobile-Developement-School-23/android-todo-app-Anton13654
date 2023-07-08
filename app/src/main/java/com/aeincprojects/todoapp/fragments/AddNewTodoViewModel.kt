@@ -3,6 +3,7 @@ package com.aeincprojects.todoapp.fragments
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aeincprojects.todoapp.data.models.TodoFromServer
 import com.aeincprojects.todoapp.data.models.TodoItem
 import com.aeincprojects.todoapp.util.Importance
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,32 +22,33 @@ class AddNewTodoViewModel @Inject constructor(
 ): ViewModel() {
     var id: String = ""
 
-    private val _itemToDo: MutableStateFlow<TodoItem?> = MutableStateFlow(null)
+    private val _itemToDo: MutableStateFlow<TodoFromServer?> = MutableStateFlow(null)
     val item = _itemToDo.asStateFlow()
 
 
 
     fun addNewTodo(){
         viewModelScope.launch(Dispatchers.IO) {
-            repository.addElementOnServer(TodoItem("0", "Не спать до утра", Importance.Low, "0", false, "0", "0"))
+            repository.addElementOnServer(TodoFromServer("1", "donyt", "low", 0, false, "0", 0,0, ""))
         }
     }
 
-/*
+
     fun takeId(newId: String){
-        id = newId
-        if(id!=""){
-            _itemToDo.value = repository.takeOneElement(id)
+        viewModelScope.launch(Dispatchers.IO) {
+            id = newId
+            if(id!=""){
+                _itemToDo.value = repository.takeOneElement(id)
+            }
         }
     }
 
- */
 
     fun selectImportance(importance: String){
 
     }
-/*
-    fun saveNewTodo(text: String, importance: Importance, data: String = ""){
+
+    /*fun saveNewTodo(text: String, importance: Importance, data: String = ""){
         viewModelScope.launch(Dispatchers.IO) {
             lateinit var newItem: TodoItem
             if(_itemToDo.value==null){
@@ -58,30 +60,48 @@ class AddNewTodoViewModel @Inject constructor(
         }
     }
 
- */
+     */
 
-    private fun getCurrentData(): String{
-        val dataCreation = LocalDateTime.now()
-        val day = dataCreation.dayOfMonth
-        val month = dataCreation.monthValue
-        var dayString = ""
-        var mountString = ""
-        if(day<10) {dayString = "0$day" }
-        if(month<10) {mountString = "0$mountString" }
-        return "$dayString/$mountString/${dataCreation.year}"
+    private fun saveNewTodo(text: String, importance: String, dataFinish: Long?){
+        viewModelScope.launch(Dispatchers.IO) {
+            val newItem = TodoFromServer(System.currentTimeMillis().toString(), text, importance, dataFinish, false, "black", System.currentTimeMillis(), System.currentTimeMillis(), "me")
+            repository.addElementOnServer(newItem)
+        }
     }
 
-
-/*
-    fun deleteElement(){
+    private fun updateTodo(text: String, importance: String, dataFinish: Long = 0){
         viewModelScope.launch(Dispatchers.IO) {
+            val newItem = TodoFromServer(System.currentTimeMillis().toString(), text, importance, dataFinish, false, "black", _itemToDo.value!!.created_at, System.currentTimeMillis(), "me")
+            repository.updateElementOnServer(_itemToDo.value!!.id, newItem)
+        }
+    }
+
+    fun saveTodo(text: String, importance: Importance, dataFinish: Long = 0){
+        viewModelScope.launch(Dispatchers.IO) {
+            val textImportance = when(importance){
+                Importance.Low -> "low"
+                Importance.Normal -> "normal"
+                Importance.Urgent -> "urgent"
+            }
             if(id!=""){
-                repository.deleteElement(id)
+                updateTodo(text, textImportance, dataFinish)
+            }else{
+                saveNewTodo(text, textImportance, dataFinish)
             }
         }
     }
 
- */
+
+
+    fun deleteElement(){
+        viewModelScope.launch(Dispatchers.IO) {
+            if(id!=""){
+                repository.deleteElementOnServer(id)
+            }
+        }
+    }
+
+
 
 
 
