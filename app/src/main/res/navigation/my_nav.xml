@@ -7,20 +7,28 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.aeincprojects.todoapp.fragments.MainFragment"
+        android:name="com.aeincprojects.todoapp.presentation.main.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
         <action
             android:id="@+id/action_mainFragment_to_addNewTodoFragment"
             app:destination="@id/addNewTodoFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/addNewTodoFragment"
-        android:name="com.aeincprojects.todoapp.fragments.AddNewTodoFragment"
+        android:name="com.aeincprojects.todoapp.presentation.newTodo.AddNewTodoFragment"
         android:label="fragment_add_new_todo"
         tools:layout="@layout/fragment_add_new_todo" >
         <argument
             android:name="id"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.aeincprojects.todoapp.presentation.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>
