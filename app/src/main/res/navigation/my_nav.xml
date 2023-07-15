@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_mainFragment_to_addNewTodoFragment"
             app:destination="@id/addNewTodoFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/addNewTodoFragment"
@@ -23,4 +26,9 @@
             android:name="id"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.aeincprojects.todoapp.presentation.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>

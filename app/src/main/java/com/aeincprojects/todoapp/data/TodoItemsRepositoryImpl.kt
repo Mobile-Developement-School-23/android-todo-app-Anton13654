@@ -9,6 +9,7 @@ import com.aeincprojects.todoapp.data.database.TodoDao
 import com.aeincprojects.todoapp.data.models.Element
 import com.aeincprojects.todoapp.data.models.TodoFromServer
 import com.aeincprojects.todoapp.domain.TodoItemsRepository
+import com.aeincprojects.todoapp.util.Theme
 import javax.inject.Inject
 
 class TodoItemsRepositoryImpl @Inject constructor(
@@ -29,6 +30,7 @@ class TodoItemsRepositoryImpl @Inject constructor(
                 val listTodo =  serverApi.takeListFromServer().body()
                 if (listTodo != null) {
                     todoDao.addElements(listTodo.list)
+                    updateVersion(listTodo.revision)
                 }
                 return if (listTodo != null && listTodo.list.isNotEmpty()){
                     listTodo.list
@@ -82,11 +84,18 @@ class TodoItemsRepositoryImpl @Inject constructor(
     }
 
     private fun takeVersion(): Int {
-        return sharedPreferences.getInt("key", 12)
+        return sharedPreferences.getInt("key", 17)
     }
 
     private fun updateVersion(newVersion: Int) {
         sharedPreferences.edit { putInt("key", newVersion) }
     }
 
+    override suspend fun takeTheme(): Theme{
+        return Theme.valueOf(sharedPreferences.getString("theme", Theme.System.name)!!)
+    }
+
+    override suspend fun updateTheme(theme: Theme) {
+        sharedPreferences.edit { putString("theme", theme.name) }
+    }
 }

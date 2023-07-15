@@ -60,6 +60,9 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             viewModel.getListTodo()
             findNavController().navigate(MainFragmentDirections.actionMainFragmentToAddNewTodoFragment(""))
         }
+        binding.buttonSettings.setOnClickListener{
+            findNavController().navigate(MainFragmentDirections.actionMainFragmentToSettingsFragment())
+        }
     }
 
 

@@ -26,7 +26,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideToDoRepository(todoDao: TodoDao, @ApplicationContext context: Context, serverApi: ServerApi, sharedPreferences: SharedPreferences): TodoItemsRepository = TodoItemsRepositoryImpl(todoDao, context, serverApi, sharedPreferences )
+    fun provideToDoRepository(todoDao: TodoDao, @ApplicationContext context: Context, serverApi: ServerApi, sharedPreferences: SharedPreferences, themeSharPref: SharedPreferences): TodoItemsRepository = TodoItemsRepositoryImpl(todoDao, context, serverApi, sharedPreferences )
 
     @Provides
     @Singleton

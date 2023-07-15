@@ -43,7 +43,7 @@ class AddNewTodoViewModel @Inject constructor(
 
     private fun updateTodo(text: String, importance: String, dataFinish: Long = 0){
         viewModelScope.launch(Dispatchers.IO) {
-            val newItem = TodoFromServer(System.currentTimeMillis().toString(), text, importance, dataFinish, false, "black", _itemToDo.value!!.created_at, System.currentTimeMillis(), "me")
+            val newItem = TodoFromServer(_itemToDo.value!!.id, text, importance, dataFinish, false, "black", _itemToDo.value!!.created_at, System.currentTimeMillis(), "me")
             repository.updateElementOnServer(_itemToDo.value!!.id, newItem)
         }
     }
@@ -51,7 +51,7 @@ class AddNewTodoViewModel @Inject constructor(
     fun saveTodo(text: String, importance: Importance, dataFinish: Long = 0){
         viewModelScope.launch(Dispatchers.IO) {
             val textImportance = when(importance){
-                Importance.Low -> "low"
+                Importance.Low    -> "low"
                 Importance.Normal -> "basic"
                 Importance.Urgent -> "important"
             }
